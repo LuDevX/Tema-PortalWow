@@ -1,0 +1,60 @@
+<style>
+.pw-collection-page { max-width: 1160px; margin: 0 auto; padding: 48px 5vw 96px; }
+.pw-collection-header {
+  text-align: center; padding: 40px 0 56px;
+  border-bottom: 1px solid var(--pw-border); margin-bottom: 48px;
+}
+.pw-collection-header h1 {
+  font-size: clamp(32px, 5vw, 56px); letter-spacing: -2px; margin-bottom: 12px;
+}
+.pw-collection-header p {
+  font-size: 16px; font-weight: 300; color: var(--pw-muted);
+  max-width: 480px; margin: 0 auto; line-height: 1.75;
+}
+.pw-collection-count {
+  font-family: var(--pw-font-mono); font-size: 12px; color: var(--pw-muted2);
+  margin-top: 16px;
+}
+.pw-collection-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
+}
+.pw-empty-state {
+  grid-column: span 3; text-align: center; padding: 80px 0;
+  color: var(--pw-muted);
+}
+.pw-empty-state p { font-size: 16px; font-weight: 300; }
+@media (max-width: 768px) { .pw-collection-grid { grid-template-columns: repeat(2, 1fr); } .pw-empty-state { grid-column: span 2; } }
+@media (max-width: 480px) { .pw-collection-grid { grid-template-columns: 1fr; } .pw-empty-state { grid-column: span 1; } }
+</style>
+
+<div class="pw-collection-page">
+  <div class="pw-collection-header pw-reveal">
+    <div class="pw-eyebrow" style="justify-content:center;">Catálogo</div>
+    <h1>{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <p>{{ collection.description }}</p>
+    {%- else -%}
+      <p>Herramientas digitales diseñadas para resolver problemas reales, rápido y sin complicaciones.</p>
+    {%- endif -%}
+    <p class="pw-collection-count">{{ collection.products_count }} software{%- if collection.products_count != 1 -%}s{%- endif -%} disponible{%- if collection.products_count != 1 -%}s{%- endif -%}</p>
+  </div>
+
+  <div class="pw-collection-grid">
+    {%- if collection.products_count > 0 -%}
+      {%- for product in collection.products -%}
+        <div class="pw-reveal" style="transition-delay:{{ forloop.index0 | times: 80 }}ms;">
+          {% render 'product-card', product: product %}
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="pw-empty-state">
+        <p style="font-size:48px;margin-bottom:16px;">🔧</p>
+        <p>Pronto habrá más herramientas disponibles.</p>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Collection Main", "settings": [], "presets": [{ "name": "Collection Main" }] }
+{% endschema %}

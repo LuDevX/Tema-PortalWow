@@ -1,0 +1,123 @@
+<style>
+.pw-page { max-width: 760px; margin: 0 auto; padding: 48px 5vw 96px; }
+.pw-page-header { margin-bottom: 40px; padding-bottom: 32px; border-bottom: 1px solid var(--pw-border); }
+.pw-page-header h1 { font-size: clamp(28px, 4vw, 44px); letter-spacing: -1.5px; margin-bottom: 10px; }
+.pw-page-header p { font-size: 15px; font-weight: 300; color: var(--pw-muted); }
+.pw-page-body h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; margin: 32px 0 12px; color: var(--pw-text); }
+.pw-page-body h3 { font-size: 17px; font-weight: 700; margin: 24px 0 8px; color: var(--pw-text); }
+.pw-page-body p { font-size: 15px; font-weight: 300; color: var(--pw-muted); line-height: 1.8; margin-bottom: 14px; }
+.pw-page-body ul { margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; }
+.pw-page-body li { font-size: 14px; color: var(--pw-muted); font-weight: 300; padding-left: 16px; position: relative; }
+.pw-page-body li::before { content: '–'; position: absolute; left: 0; color: var(--pw-green); }
+.pw-page-body a { color: var(--pw-green); transition: opacity 0.2s; }
+.pw-page-body a:hover { opacity: 0.8; }
+.pw-page-body strong { color: var(--pw-text); font-weight: 600; }
+
+/* DESCARGAS */
+.pw-downloads-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+.pw-dl-card {
+  background: var(--pw-bg3); border: 1px solid var(--pw-border);
+  border-radius: var(--pw-radius); padding: 24px;
+  transition: border-color 0.25s;
+}
+.pw-dl-card:hover { border-color: rgba(0,229,160,0.25); }
+.pw-dl-card-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+.pw-dl-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; color: var(--pw-text); }
+.pw-dl-card p { font-size: 13px; font-weight: 300; color: var(--pw-muted); line-height: 1.65; margin-bottom: 14px; }
+.pw-dl-limit { font-family: var(--pw-font-mono); font-size: 11px; color: var(--pw-muted2); margin-bottom: 14px; }
+
+/* FAQ PAGE */
+.pw-faq-section { margin-top: 32px; }
+.pw-faq-section > h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.5px; }
+
+/* SOPORTE */
+.pw-support-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 28px 0; }
+.pw-support-card {
+  background: var(--pw-bg3); border: 1px solid var(--pw-border);
+  border-radius: var(--pw-radius); padding: 22px;
+}
+.pw-support-card-icon { font-size: 28px; margin-bottom: 10px; display: block; }
+.pw-support-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.pw-support-card p { font-size: 13px; color: var(--pw-muted); font-weight: 300; margin-bottom: 12px; }
+.pw-support-card a { font-size: 13px; color: var(--pw-green); }
+@media(max-width:560px){ .pw-downloads-grid,.pw-support-cards{ grid-template-columns:1fr; } }
+</style>
+
+<div class="pw-page">
+  <div class="pw-page-header pw-reveal">
+    <div class="pw-eyebrow">{{ page.title }}</div>
+    <h1>{{ page.title }}</h1>
+  </div>
+
+  {%- if page.handle == 'descargas' -%}
+    <div class="pw-page-body pw-reveal">
+      <p>Prueba el Generador de Documentos sin costo. La versión gratuita te permite generar hasta 10 documentos por lote para que la conozcas antes de comprar.</p>
+      <div class="pw-downloads-grid">
+        <div class="pw-dl-card">
+          <span class="pw-dl-card-icon">📥</span>
+          <h3>Versión Freemium</h3>
+          <p>Generador de Documentos con todas las funciones básicas disponibles.</p>
+          <p class="pw-dl-limit">Límite: 10 documentos por lote</p>
+          <a href="https://portalwow.cl/descargas/instalador-portalwow" class="pw-btn-primary" style="display:inline-flex;font-size:13px;padding:10px 20px;">
+            Descargar gratis
+          </a>
+        </div>
+        <div class="pw-dl-card" style="border-color:rgba(0,229,160,0.2);">
+          <span class="pw-dl-card-icon">⚡</span>
+          <h3>Versión Completa</h3>
+          <p>Sin límite de documentos, actualizaciones incluidas y soporte prioritario.</p>
+          <p class="pw-dl-limit" style="color:var(--pw-green);">Ilimitado · Licencia de por vida</p>
+          <a href="/products/generador-de-documentos" class="pw-btn-primary" style="display:inline-flex;font-size:13px;padding:10px 20px;">
+            Comprar — $17.990
+          </a>
+        </div>
+      </div>
+      <h2>Requisitos del sistema</h2>
+      <ul>
+        <li>Windows 10 o superior (64 bits)</li>
+        <li>Microsoft Word instalado (para abrir los documentos generados)</li>
+        <li>Microsoft Excel o compatible (para preparar el listado de datos)</li>
+        <li>50 MB de espacio en disco</li>
+        <li>No requiere internet</li>
+      </ul>
+    </div>
+
+  {%- elsif page.handle == 'soporte' -%}
+    <div class="pw-page-body pw-reveal">
+      <p>¿Tienes algún problema o pregunta? Estamos aquí para ayudarte.</p>
+      <div class="pw-support-cards">
+        <div class="pw-support-card">
+          <span class="pw-support-card-icon">💬</span>
+          <h3>WhatsApp</h3>
+          <p>Respuesta rápida en horario hábil.</p>
+          <a href="https://wa.me/56912345678">Escribir por WhatsApp →</a>
+        </div>
+        <div class="pw-support-card">
+          <span class="pw-support-card-icon">📧</span>
+          <h3>Email</h3>
+          <p>Para consultas detalladas o reembolsos.</p>
+          <a href="mailto:soporte@portalwow.cl">soporte@portalwow.cl →</a>
+        </div>
+      </div>
+      <h2>Preguntas frecuentes</h2>
+      <div class="pw-faq-section">
+        <div class="pw-faq">
+          <div class="pw-faq-item"><button class="pw-faq-q">¿Cómo instalo el software?</button><div class="pw-faq-a">Descarga el instalador, ejecuta el archivo .exe y sigue los pasos. No requiere configuración adicional. El software estará listo en menos de 2 minutos.</div></div>
+          <div class="pw-faq-item"><button class="pw-faq-q">¿Cómo defino los tags en Word?</button><div class="pw-faq-a">Escribe el nombre del campo entre dobles llaves: &#123;&#123;nombre&#125;&#125;, &#123;&#123;rut&#125;&#125;, &#123;&#123;empresa&#125;&#125;. El nombre debe coincidir exactamente con el encabezado de la columna en el Excel.</div></div>
+          <div class="pw-faq-item"><button class="pw-faq-q">¿Qué hago si el software no abre?</button><div class="pw-faq-a">Asegúrate de tener Windows 10 o superior. Si persiste el problema, escríbenos por WhatsApp con una captura de pantalla del error.</div></div>
+          <div class="pw-faq-item"><button class="pw-faq-q">¿Puedo solicitar reembolso?</button><div class="pw-faq-a">Sí. Si el software no funciona en tu equipo y no podemos solucionarlo en 48 horas, te devolvemos el 100% del pago. Escríbenos a soporte@portalwow.cl.</div></div>
+          <div class="pw-faq-item"><button class="pw-faq-q">¿Cómo activo mi licencia?</button><div class="pw-faq-a">Al comprar recibirás un código de licencia por email. Ingresa el código en la sección "Activar licencia" dentro del software.</div></div>
+        </div>
+      </div>
+    </div>
+
+  {%- else -%}
+    <div class="pw-page-body pw-reveal">
+      {{ page.content }}
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Page Content", "settings": [], "presets": [{ "name": "Page Content" }] }
+{% endschema %}

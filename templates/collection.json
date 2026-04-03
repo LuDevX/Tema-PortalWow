@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "collection-main": { "type": "collection-main", "disabled": false }
+  },
+  "order": ["collection-main"]
+}

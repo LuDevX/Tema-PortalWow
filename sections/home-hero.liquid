@@ -1,0 +1,457 @@
+<style>
+/* ── HERO ─────────────────────────────────────────── */
+.pw-hero {
+  min-height: calc(100vh - 68px);
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 72px 5vw 80px; position: relative; overflow: hidden;
+}
+.pw-hero-orb1 {
+  position: absolute; top: -180px; right: -120px;
+  width: 640px; height: 640px; pointer-events: none;
+  background: radial-gradient(circle, rgba(0,229,160,0.065) 0%, transparent 65%);
+}
+.pw-hero-orb2 {
+  position: absolute; bottom: -80px; left: -120px;
+  width: 500px; height: 500px; pointer-events: none;
+  background: radial-gradient(circle, rgba(139,92,246,0.05) 0%, transparent 65%);
+}
+.pw-hero-inner { max-width: 1160px; margin: 0 auto; width: 100%; position: relative; z-index: 1; }
+
+.pw-hero-status {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--pw-border2); padding: 6px 16px; border-radius: 100px;
+  font-family: var(--pw-font-mono); font-size: 12px; color: var(--pw-muted);
+  margin-bottom: 28px;
+}
+.pw-hero h1 {
+  font-size: clamp(52px, 9vw, 104px); font-weight: 800;
+  line-height: 0.92; letter-spacing: -4px; margin-bottom: 10px;
+}
+.pw-hero h1 em { color: var(--pw-green); font-style: normal; }
+.pw-hero-sub {
+  font-family: var(--pw-font-display); font-size: clamp(18px, 2.5vw, 30px);
+  font-weight: 700; color: var(--pw-muted2); letter-spacing: -0.5px;
+  margin-bottom: 22px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.pw-hero-sub-sep { width: 4px; height: 4px; background: var(--pw-muted2); border-radius: 50%; }
+.pw-hero-desc {
+  font-size: 17px; font-weight: 300; color: var(--pw-muted);
+  line-height: 1.78; max-width: 520px; margin-bottom: 40px;
+}
+.pw-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 64px; }
+.pw-hero-stats {
+  display: flex; gap: 48px; padding-top: 28px;
+  border-top: 1px solid var(--pw-border); flex-wrap: wrap;
+}
+.pw-stat strong {
+  display: block; font-family: var(--pw-font-display);
+  font-size: 34px; font-weight: 800; color: var(--pw-text);
+  letter-spacing: -1.5px; line-height: 1; margin-bottom: 4px;
+}
+.pw-stat span {
+  font-family: var(--pw-font-mono); font-size: 11px;
+  color: var(--pw-muted2); text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ── MARQUEE ──────────────────────────────────────── */
+.pw-marquee-wrap {
+  border-top: 1px solid var(--pw-border); border-bottom: 1px solid var(--pw-border);
+  padding: 14px 0; overflow: hidden; background: var(--pw-bg2);
+  position: relative; z-index: 1;
+}
+.pw-marquee-track {
+  display: flex; gap: 40px; width: max-content;
+  animation: pw-marquee 32s linear infinite;
+}
+.pw-marquee-track:hover { animation-play-state: paused; }
+@keyframes pw-marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.pw-marquee-item {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--pw-font-mono); font-size: 12px; color: var(--pw-muted2); white-space: nowrap;
+}
+.pw-marquee-item .g { color: var(--pw-green); }
+.pw-marquee-sep { width: 3px; height: 3px; background: var(--pw-muted2); border-radius: 50%; }
+
+/* ── PRODUCTO DESTACADO ───────────────────────────── */
+.pw-product-hero {
+  display: grid; grid-template-columns: 1.1fr 0.9fr;
+  border: 1px solid var(--pw-border); border-radius: var(--pw-radius-lg);
+  overflow: hidden; margin-bottom: 20px;
+}
+.pw-ph-left {
+  background: var(--pw-bg3); padding: 52px 48px;
+  display: flex; flex-direction: column; justify-content: space-between; min-height: 420px;
+}
+.pw-ph-right {
+  background: var(--pw-surface); padding: 40px;
+  display: flex; flex-direction: column; justify-content: center; gap: 10px;
+  position: relative; overflow: hidden;
+}
+.pw-ph-right::before {
+  content: ''; position: absolute; top: -80px; right: -80px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, rgba(0,229,160,0.07) 0%, transparent 70%);
+}
+.pw-ph-left h3 {
+  font-size: clamp(24px, 3.5vw, 42px); font-weight: 800; letter-spacing: -1px;
+  color: var(--pw-text); line-height: 1.05; margin-bottom: 10px;
+}
+.pw-ph-left > div > p {
+  font-size: 14px; font-weight: 300; color: var(--pw-muted); line-height: 1.75; margin-bottom: 24px;
+}
+.pw-ph-price { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+.pw-ph-price .pw-price-now { font-size: 38px; }
+.pw-ph-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* Flow mini */
+.pw-flow { display: flex; flex-direction: column; gap: 6px; }
+.pw-flow-step {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--pw-bg3); border: 1px solid var(--pw-border);
+  border-radius: 10px; padding: 10px 14px;
+}
+.pw-flow-icon { font-size: 18px; flex-shrink: 0; }
+.pw-flow-name { font-size: 12px; font-weight: 600; color: var(--pw-text); margin-bottom: 1px; }
+.pw-flow-meta { font-family: var(--pw-font-mono); font-size: 10px; color: var(--pw-muted2); }
+.pw-flow-arr { text-align: center; color: var(--pw-muted2); font-size: 14px; padding: 2px; }
+.pw-flow-result {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--pw-green-dim); border: 1px solid rgba(0,229,160,0.2);
+  border-radius: 10px; padding: 10px 14px;
+}
+.pw-flow-result-name { font-size: 12px; font-weight: 600; color: var(--pw-green); margin-bottom: 1px; }
+.pw-flow-result-meta { font-family: var(--pw-font-mono); font-size: 10px; color: rgba(0,229,160,0.45); }
+
+/* Coming soon */
+.pw-coming-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+}
+.pw-coming {
+  border: 1px dashed var(--pw-border2); border-radius: var(--pw-radius);
+  padding: 28px 24px; position: relative; overflow: hidden;
+  transition: border-color 0.25s;
+}
+.pw-coming:hover { border-color: rgba(0,229,160,0.2); }
+.pw-coming-label {
+  position: absolute; top: 16px; right: 16px;
+  font-family: var(--pw-font-mono); font-size: 9px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 1px; color: var(--pw-muted2);
+  border: 1px solid var(--pw-border2); padding: 2px 8px; border-radius: 100px;
+}
+.pw-coming-icon { font-size: 34px; display: block; margin-bottom: 12px; }
+.pw-coming h4 {
+  font-family: var(--pw-font-display); font-size: 16px; font-weight: 700;
+  color: var(--pw-muted); letter-spacing: -0.3px; margin-bottom: 6px;
+}
+.pw-coming p { font-size: 13px; font-weight: 300; color: var(--pw-muted2); line-height: 1.65; }
+
+/* ── CASOS DE USO ─────────────────────────────────── */
+.pw-use-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  max-width: 1160px; margin: 0 auto;
+}
+.pw-use {
+  background: var(--pw-bg3); border: 1px solid var(--pw-border);
+  border-radius: var(--pw-radius); padding: 28px 22px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.pw-use:hover { border-color: rgba(0,229,160,0.22); transform: translateY(-3px); }
+.pw-use-num { font-family: var(--pw-font-mono); font-size: 10px; color: var(--pw-muted2); margin-bottom: 12px; }
+.pw-use-icon { font-size: 30px; display: block; margin-bottom: 12px; }
+.pw-use h4 {
+  font-family: var(--pw-font-display); font-size: 15px; font-weight: 700;
+  color: var(--pw-text); margin-bottom: 6px; letter-spacing: -0.3px;
+}
+.pw-use p { font-size: 13px; font-weight: 300; color: var(--pw-muted); line-height: 1.65; }
+
+/* ── ABOUT / MANIFIESTO ───────────────────────────── */
+.pw-about {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 72px;
+  align-items: center; max-width: 1160px; margin: 0 auto;
+}
+.pw-about-left h2 {
+  font-size: clamp(30px, 4.5vw, 54px); letter-spacing: -2px; margin-bottom: 18px;
+}
+.pw-about-left h2 em { color: var(--pw-green); font-style: normal; }
+.pw-about-left p {
+  font-size: 15px; font-weight: 300; color: var(--pw-muted);
+  line-height: 1.8; margin-bottom: 14px;
+}
+.pw-manifesto { display: flex; flex-direction: column; gap: 18px; }
+.pw-manifesto-item { display: flex; gap: 16px; align-items: flex-start; }
+.pw-manifesto-n {
+  font-family: var(--pw-font-mono); font-size: 10px; color: var(--pw-green);
+  background: var(--pw-green-dim); border: 1px solid rgba(0,229,160,0.15);
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+}
+.pw-manifesto-item h4 {
+  font-family: var(--pw-font-display); font-size: 15px; font-weight: 700;
+  color: var(--pw-text); margin-bottom: 4px; letter-spacing: -0.3px;
+}
+.pw-manifesto-item p { font-size: 13px; font-weight: 300; color: var(--pw-muted); line-height: 1.65; }
+
+/* ── CTA BOX ──────────────────────────────────────── */
+.pw-cta-box {
+  background: var(--pw-bg3); border: 1px solid rgba(0,229,160,0.14);
+  border-radius: 24px; padding: 80px 56px; text-align: center;
+  position: relative; overflow: hidden; max-width: 1160px; margin: 0 auto;
+}
+.pw-cta-orb {
+  position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 280px; pointer-events: none;
+  background: radial-gradient(ellipse, rgba(0,229,160,0.07) 0%, transparent 70%);
+}
+.pw-cta-box h2 { font-size: clamp(26px, 4vw, 50px); letter-spacing: -2px; margin-bottom: 12px; position: relative; }
+.pw-cta-box > p { font-size: 16px; font-weight: 300; color: var(--pw-muted); margin-bottom: 32px; position: relative; }
+.pw-cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; position: relative; }
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media (max-width: 960px) {
+  .pw-product-hero { grid-template-columns: 1fr; }
+  .pw-ph-right { display: none; }
+  .pw-coming-grid { grid-template-columns: 1fr 1fr; }
+  .pw-use-grid { grid-template-columns: 1fr 1fr; }
+  .pw-about { grid-template-columns: 1fr; gap: 40px; }
+  .pw-cta-box { padding: 56px 28px; }
+}
+@media (max-width: 580px) {
+  .pw-hero h1 { letter-spacing: -2.5px; }
+  .pw-hero-stats { gap: 28px; }
+  .pw-coming-grid { grid-template-columns: 1fr; }
+  .pw-use-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<!-- HERO -->
+<section class="pw-hero">
+  <div class="pw-hero-orb1"></div>
+  <div class="pw-hero-orb2"></div>
+  <div class="pw-hero-inner">
+
+    <div class="pw-hero-status">
+      <span class="pw-badge-dot"></span>
+      Software activo · v2.1 disponible
+    </div>
+
+    <h1>Portal<em>Wow</em></h1>
+
+    <div class="pw-hero-sub">
+      <span style="color:var(--pw-green)">Software</span>
+      <span class="pw-hero-sub-sep"></span>
+      <span>que resuelve</span>
+      <span class="pw-hero-sub-sep"></span>
+      <span>problemas reales.</span>
+    </div>
+
+    <p class="pw-hero-desc">
+      Herramientas digitales diseñadas para hacer tu trabajo más rápido, más preciso y sin complicaciones. Tecnología accesible para emprendedores, profesionales y empresas en Chile.
+    </p>
+
+    <div class="pw-hero-actions">
+      <a href="#pw-productos" class="pw-btn-primary">
+        Ver softwares
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M8.5 4l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="{{ routes.collections_url }}/all" class="pw-btn-secondary">Explorar catálogo</a>
+    </div>
+
+    <div class="pw-hero-stats">
+      <div class="pw-stat"><strong>+500</strong><span>docs generados</span></div>
+      <div class="pw-stat"><strong>98%</strong><span>sin errores</span></div>
+      <div class="pw-stat"><strong>&lt;10s</strong><span>generación masiva</span></div>
+      <div class="pw-stat"><strong>100%</strong><span>local · sin nube</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="pw-marquee-wrap">
+  <div class="pw-marquee-track" aria-hidden="true">
+    {%- assign items = "Generador de Documentos,Word + Excel = magia,Sin código,100% Local,Licencia de por vida,Generación masiva,Automatización real,Contratos · Finiquitos · Certificados,Software que funciona,Próximamente más herramientas,Generador de Documentos,Word + Excel = magia,Sin código,100% Local,Licencia de por vida,Generación masiva,Automatización real,Contratos · Finiquitos · Certificados,Software que funciona,Próximamente más herramientas" | split: "," -%}
+    {%- for item in items -%}
+      <div class="pw-marquee-item">
+        <span>{{ item }}</span>
+        <span class="pw-marquee-sep"></span>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<!-- PRODUCTOS -->
+<section class="pw-section" id="pw-productos">
+  <div class="pw-container">
+    <div class="pw-section-head pw-reveal" style="margin-bottom:48px;">
+      <div class="pw-eyebrow">Softwares disponibles</div>
+      <h2 style="font-size:clamp(28px,4vw,48px);letter-spacing:-1.5px;margin-bottom:10px;">Herramientas que ya<br>puedes usar hoy.</h2>
+      <p style="font-size:16px;font-weight:300;color:var(--pw-muted);max-width:460px;line-height:1.75;">Un software resuelve un problema. Uno bien hecho lo resuelve para siempre.</p>
+    </div>
+
+    <!-- Producto destacado -->
+    <div class="pw-product-hero pw-reveal">
+      <div class="pw-ph-left">
+        <div>
+          <div class="pw-badge" style="margin-bottom:16px;">
+            <span class="pw-badge-dot"></span>Disponible ahora
+          </div>
+          <h3>Generador de<br>Documentos</h3>
+          <p>Sube tu plantilla Word con los tags, carga tu Excel con los datos y elige la carpeta. PortalWow genera cientos de documentos personalizados en segundos — sin código, sin internet.</p>
+        </div>
+        <div>
+          <div class="pw-ph-price">
+            <span class="pw-price-now" style="font-size:38px;">$17.990</span>
+            <span class="pw-price-old" style="font-size:16px;">$25.990</span>
+            <span class="pw-price-off">-31%</span>
+          </div>
+          <div class="pw-ph-btns">
+            {%- assign prod = all_products['generador-de-documentos'] -%}
+            {%- if prod != blank -%}
+              <a href="{{ prod.url }}" class="pw-btn-primary">
+                Comprar licencia
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            {%- else -%}
+              <a href="/products/generador-de-documentos" class="pw-btn-primary">
+                Comprar licencia
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            {%- endif -%}
+            <a href="{{ routes.pages_url }}/descargas" class="pw-btn-secondary">📥 Probar gratis</a>
+          </div>
+        </div>
+      </div>
+      <div class="pw-ph-right">
+        <div style="font-family:var(--pw-font-mono);font-size:10px;color:var(--pw-muted2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Flujo de trabajo</div>
+        <div class="pw-flow">
+          <div class="pw-flow-step">
+            <span class="pw-flow-icon">📄</span>
+            <div><div class="pw-flow-name">Plantilla Word</div><div class="pw-flow-meta">contrato_[nombre]_[rut].docx</div></div>
+          </div>
+          <div class="pw-flow-arr">↓</div>
+          <div class="pw-flow-step">
+            <span class="pw-flow-icon">📊</span>
+            <div><div class="pw-flow-name">Listado Excel</div><div class="pw-flow-meta">clientes.xlsx · 500 filas</div></div>
+          </div>
+          <div class="pw-flow-arr">↓</div>
+          <div class="pw-flow-step">
+            <span class="pw-flow-icon">📁</span>
+            <div><div class="pw-flow-name">Carpeta destino</div><div class="pw-flow-meta">C:\Contratos\Enero\</div></div>
+          </div>
+          <div class="pw-flow-arr" style="color:var(--pw-green);">↓</div>
+          <div class="pw-flow-result">
+            <span style="font-size:20px;">⚡</span>
+            <div><div class="pw-flow-result-name">500 documentos generados</div><div class="pw-flow-result-meta">completado en 8 segundos</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coming soon -->
+    <div class="pw-coming-grid">
+      <div class="pw-coming pw-reveal pw-d1">
+        <span class="pw-coming-label">Pronto</span>
+        <span class="pw-coming-icon">🧾</span>
+        <h4>Generador de Boletas</h4>
+        <p>Boletas de honorarios en masa con datos del SII. Rellena el mes, genera todo.</p>
+      </div>
+      <div class="pw-coming pw-reveal pw-d2">
+        <span class="pw-coming-label">Evaluando</span>
+        <span class="pw-coming-icon">📦</span>
+        <h4>Hardware & Accesorios</h4>
+        <p>Componentes, periféricos y accesorios de computación seleccionados. Proximamente.</p>
+      </div>
+      <div class="pw-coming pw-reveal pw-d3">
+        <span class="pw-coming-label">En desarrollo</span>
+        <span class="pw-coming-icon">🤖</span>
+        <h4>Más herramientas</h4>
+        <p>Automatización, gestión de archivos y más. ¿Tienes una idea? Escríbenos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASOS DE USO -->
+<section class="pw-section-alt">
+  <div class="pw-container pw-section-head pw-reveal" style="margin-bottom:44px;">
+    <div class="pw-eyebrow">¿Para quién?</div>
+    <h2 style="font-size:clamp(26px,4vw,44px);letter-spacing:-1.5px;">Si trabajas con documentos,<br>esto es para ti.</h2>
+  </div>
+  <div class="pw-use-grid">
+    <div class="pw-use pw-reveal">
+      <div class="pw-use-num">01</div>
+      <span class="pw-use-icon">🏢</span>
+      <h4>RRHH y empresas</h4>
+      <p>Finiquitos, contratos de trabajo y certificados — todos en segundos.</p>
+    </div>
+    <div class="pw-use pw-reveal pw-d1">
+      <div class="pw-use-num">02</div>
+      <span class="pw-use-icon">🏠</span>
+      <h4>Inmobiliarias</h4>
+      <p>Contratos de arriendo personalizados para cada arrendatario, sin copy-paste.</p>
+    </div>
+    <div class="pw-use pw-reveal pw-d2">
+      <div class="pw-use-num">03</div>
+      <span class="pw-use-icon">⚖️</span>
+      <h4>Estudios legales</h4>
+      <p>Contratos, actas y poderes. Misma base, datos distintos, cientos de archivos.</p>
+    </div>
+    <div class="pw-use pw-reveal pw-d3">
+      <div class="pw-use-num">04</div>
+      <span class="pw-use-icon">💼</span>
+      <h4>Freelancers</h4>
+      <p>Cotizaciones y propuestas personalizadas para cada cliente, en un clic.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="pw-section" id="pw-about">
+  <div class="pw-about">
+    <div class="pw-about-left pw-reveal">
+      <div class="pw-eyebrow">Nuestra filosofía</div>
+      <h2>Software que <em>funciona</em>.<br>Sin excusas.</h2>
+      <p>PortalWow nació con una idea simple: la tecnología debería resolver problemas reales, no crear nuevos. Cada software que lanzamos debe pasar una sola prueba — ¿le ahorra tiempo real a una persona real?</p>
+      <p>Somos una tienda nueva, con hambre de crecer. Cada herramienta viene con soporte, se actualiza y mejora con el feedback de quien la usa.</p>
+    </div>
+    <div class="pw-manifesto pw-reveal pw-d1">
+      <div class="pw-manifesto-item">
+        <div class="pw-manifesto-n">01</div>
+        <div><h4>Problemas reales primero</h4><p>No construimos porque "suena bien". Lo construimos porque alguien lo necesita hoy.</p></div>
+      </div>
+      <div class="pw-manifesto-item">
+        <div class="pw-manifesto-n">02</div>
+        <div><h4>Simple sobre complejo</h4><p>Si necesitas manual de 40 páginas, fallamos. Debe funcionar de inmediato.</p></div>
+      </div>
+      <div class="pw-manifesto-item">
+        <div class="pw-manifesto-n">03</div>
+        <div><h4>Privacidad no negociable</h4><p>Tus datos son tuyos. Nada sube a servidores. Todo funciona local en tu PC.</p></div>
+      </div>
+      <div class="pw-manifesto-item">
+        <div class="pw-manifesto-n">04</div>
+        <div><h4>Precio justo, una sola vez</h4><p>Sin suscripciones trampa. Pagas, usas, y es tuyo para siempre.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="pw-section-alt">
+  <div class="pw-cta-box pw-reveal">
+    <div class="pw-cta-orb"></div>
+    <h2>Empieza hoy.<br>Es gratis probar.</h2>
+    <p>Descarga el Generador de Documentos sin costo y comprueba cuánto tiempo recuperas.</p>
+    <div class="pw-cta-btns">
+      <a href="{{ routes.pages_url }}/descargas" class="pw-btn-primary">📥 Descargar gratis</a>
+      <a href="/products/generador-de-documentos" class="pw-btn-outline-green">Comprar licencia — $17.990</a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PortalWow Home",
+  "settings": [],
+  "presets": [{ "name": "PortalWow Home" }]
+}
+{% endschema %}
