@@ -1,6 +1,0 @@
-{
-  "sections": {
-    "not-found": { "type": "not-found", "disabled": false }
-  },
-  "order": ["not-found"]
-}

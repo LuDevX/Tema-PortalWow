@@ -1,6 +1,0 @@
-{
-  "sections": {
-    "product-main": { "type": "product-main", "disabled": false }
-  },
-  "order": ["product-main"]
-}
