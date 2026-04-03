@@ -1,0 +1,6 @@
+{
+  "sections": {
+    "article-main": { "type": "article-main", "disabled": false }
+  },
+  "order": ["article-main"]
+}

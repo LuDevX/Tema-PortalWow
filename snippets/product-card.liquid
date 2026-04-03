@@ -1,0 +1,82 @@
+<style>
+.pw-prod-card {
+  background: var(--pw-bg3); border: 1px solid var(--pw-border);
+  border-radius: var(--pw-radius-lg); overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+  display: flex; flex-direction: column;
+}
+.pw-prod-card:hover { border-color: rgba(0,229,160,0.22); transform: translateY(-4px); }
+.pw-prod-img {
+  aspect-ratio: 4/3; background: var(--pw-surface);
+  overflow: hidden; position: relative;
+}
+.pw-prod-img img { width: 100%; height: 100%; object-fit: contain; padding: 16px; transition: transform 0.3s; }
+.pw-prod-card:hover .pw-prod-img img { transform: scale(1.04); }
+.pw-prod-img-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center;
+  justify-content: center; font-size: 48px;
+}
+.pw-prod-avail {
+  position: absolute; top: 12px; left: 12px;
+}
+.pw-prod-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.pw-prod-title {
+  font-family: var(--pw-font-display); font-size: 17px; font-weight: 700;
+  color: var(--pw-text); letter-spacing: -0.3px;
+}
+.pw-prod-excerpt {
+  font-size: 13px; font-weight: 300; color: var(--pw-muted); line-height: 1.65; flex: 1;
+}
+.pw-prod-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 14px; border-top: 1px solid var(--pw-border);
+}
+.pw-prod-price { display: flex; align-items: center; gap: 8px; }
+.pw-prod-price .pw-price-now { font-size: 20px; }
+.pw-prod-price .pw-price-old { font-size: 13px; }
+.pw-prod-link {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--pw-green-dim); border: 1px solid rgba(0,229,160,0.2);
+  color: var(--pw-green); transition: background 0.2s;
+  flex-shrink: 0;
+}
+.pw-prod-link:hover { background: rgba(0,229,160,0.18); color: var(--pw-green); }
+</style>
+
+<a href="{{ product.url }}" class="pw-prod-card">
+  <div class="pw-prod-img">
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 600 }}"
+           alt="{{ product.featured_image.alt | escape }}"
+           loading="lazy">
+    {%- else -%}
+      <div class="pw-prod-img-placeholder">📄</div>
+    {%- endif -%}
+    {%- if product.available -%}
+      <div class="pw-prod-avail">
+        <span class="pw-badge" style="font-size:10px;padding:3px 10px;">
+          <span class="pw-badge-dot"></span>Disponible
+        </span>
+      </div>
+    {%- endif -%}
+  </div>
+  <div class="pw-prod-body">
+    <div class="pw-prod-title">{{ product.title }}</div>
+    <p class="pw-prod-excerpt">{{ product.description | strip_html | truncate: 100 }}</p>
+    <div class="pw-prod-footer">
+      <div class="pw-prod-price">
+        {%- if product.compare_at_price > product.price -%}
+          <span class="pw-price-now" style="font-size:20px;">{{ product.price | money }}</span>
+          <span class="pw-price-old" style="font-size:13px;">{{ product.compare_at_price | money }}</span>
+          <span class="pw-price-off">-{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round }}%</span>
+        {%- else -%}
+          <span class="pw-price-now" style="font-size:20px;">{{ product.price | money }}</span>
+        {%- endif -%}
+      </div>
+      <span class="pw-prod-link" aria-label="Ver {{ product.title }}">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </div>
+  </div>
+</a>
