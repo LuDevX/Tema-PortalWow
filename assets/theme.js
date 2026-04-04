@@ -143,8 +143,18 @@
     });
   }
 
-  /* ── Tabs ───────────────────────────────────────── */
-  function initTabs() {
+  /* ── Variant radio labels ───────────────────────── */
+  function initVariants() {
+    document.querySelectorAll('.pw-variant-btn input[type="radio"]').forEach(function(radio) {
+      radio.addEventListener('change', function() {
+        var group = radio.closest('.pw-variants-options');
+        if (group) {
+          group.querySelectorAll('.pw-variant-btn').forEach(function(b) { b.classList.remove('active'); });
+          radio.closest('.pw-variant-btn').classList.add('active');
+        }
+      });
+    });
+  }
     document.querySelectorAll('.pw-tabs').forEach(function (tabs) {
       var btns = tabs.querySelectorAll('.pw-tab-btn');
       var panels = tabs.querySelectorAll('.pw-tab-panel');
@@ -180,6 +190,7 @@
     initSmoothScroll();
     initFAQ();
     initAddToCart();
+    initVariants();
     initTabs();
     updateCartCount();
   });
