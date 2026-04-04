@@ -280,19 +280,28 @@
         {%- endif -%}
       </p>
 
-      <!-- Price -->
-      <div class="pw-product-price-block">
-        {%- if product.compare_at_price > product.price -%}
-          <span class="pw-price-now" style="font-size:42px;">{{ product.price | money }}</span>
-          <span class="pw-price-old" style="font-size:18px;">{{ product.compare_at_price | money }}</span>
-          <span class="pw-price-off">
-            -{{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price | round }}%
+      <!-- Price — se actualiza al cambiar variante -->
+      <div class="pw-product-price-block" id="pw-price-block">
+        <span class="pw-price-now" id="pw-price-now" style="font-size:42px;">
+          {{ product.selected_or_first_available_variant.price | money }}
+        </span>
+        {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+          <span class="pw-price-old" id="pw-price-old" style="font-size:18px;">
+            {{ product.selected_or_first_available_variant.compare_at_price | money }}
+          </span>
+          <span class="pw-price-off" id="pw-price-off">
+            -{{ product.selected_or_first_available_variant.compare_at_price | minus: product.selected_or_first_available_variant.price | times: 100 | divided_by: product.selected_or_first_available_variant.compare_at_price | round }}%
           </span>
         {%- else -%}
-          <span class="pw-price-now" style="font-size:42px;">{{ product.price | money }}</span>
+          <span class="pw-price-old" id="pw-price-old" style="font-size:18px;display:none;"></span>
+          <span class="pw-price-off" id="pw-price-off" style="display:none;"></span>
         {%- endif -%}
+        <span id="pw-price-period" style="font-size:13px;color:var(--pw-muted);font-family:var(--pw-font-mono);margin-left:4px;">
+          {%- if product.selected_or_first_available_variant.title contains 'Mensual' -%}/ mes
+          {%- elsif product.selected_or_first_available_variant.title contains 'Anual' -%}/ año
+          {%- endif -%}
+        </span>
       </div>
-
 
       <!-- Form nativo Shopify -->
       {%- form 'product', product, id: 'pw-product-form', novalidate: 'novalidate' -%}
@@ -306,6 +315,11 @@
                         class="pw-variant-btn {% if forloop.first %}active{% endif %}"
                         data-variant-id="{{ variant.id }}"
                         data-available="{{ variant.available }}"
+                        data-price="{{ variant.price | money }}"
+                        data-compare="{{ variant.compare_at_price | money }}"
+                        data-has-compare="{{ variant.compare_at_price > variant.price }}"
+                        data-discount="{%- if variant.compare_at_price > variant.price -%}-{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | round }}%{%- endif -%}"
+                        data-period="{%- if variant.title contains 'Mensual' -%}/ mes{%- elsif variant.title contains 'Anual' -%}/ año{%- endif -%}"
                         {% unless variant.available %}disabled{% endunless %}>
                   {{ variant.title }}
                 </button>
@@ -318,8 +332,6 @@
         {%- endif -%}
 
         <div class="pw-buy-block">
-
-          <!-- COMPRAR AHORA → directo al checkout via /cart/add?checkout -->
           <button type="button" id="pw-btn-checkout"
                   class="pw-btn-add-cart"
                   {%- unless product.available -%}disabled{%- endunless -%}>
@@ -335,7 +347,6 @@
             {%- endif -%}
           </button>
 
-          <!-- AGREGAR AL CARRITO -->
           {%- if product.available -%}
             <button type="submit" name="add" id="pw-btn-cart"
                     class="pw-btn-free-dl"
@@ -347,7 +358,6 @@
           <a href="{{ routes.pages_url }}/descargas" class="pw-btn-free-dl">
             📥 Versión gratuita
           </a>
-
         </div>
 
       {%- endform -%}
@@ -358,20 +368,42 @@
           var hiddenInput    = document.getElementById('pw-variant-id');
           var checkoutBtn    = document.getElementById('pw-btn-checkout');
           var cartBtn        = document.getElementById('pw-btn-cart');
+          var priceNow       = document.getElementById('pw-price-now');
+          var priceOld       = document.getElementById('pw-price-old');
+          var priceOff       = document.getElementById('pw-price-off');
+          var pricePeriod    = document.getElementById('pw-price-period');
 
-          /* ── Selección de variante ── */
+          /* ── Selección de variante → actualiza precio ── */
           variantOptions.forEach(function(btn) {
             btn.addEventListener('click', function() {
               variantOptions.forEach(function(b) { b.classList.remove('active'); });
               btn.classList.add('active');
+
+              /* Actualizar hidden input */
               if (hiddenInput) hiddenInput.value = btn.getAttribute('data-variant-id');
+
+              /* Actualizar precio */
+              if (priceNow) priceNow.textContent = btn.getAttribute('data-price');
+              if (pricePeriod) pricePeriod.textContent = btn.getAttribute('data-period');
+
+              var hasCompare = btn.getAttribute('data-has-compare') === 'true';
+              if (priceOld) {
+                priceOld.textContent = hasCompare ? btn.getAttribute('data-compare') : '';
+                priceOld.style.display = hasCompare ? '' : 'none';
+              }
+              if (priceOff) {
+                priceOff.textContent = hasCompare ? btn.getAttribute('data-discount') : '';
+                priceOff.style.display = hasCompare ? '' : 'none';
+              }
+
+              /* Actualizar botones si variante sin stock */
               var available = btn.getAttribute('data-available') === 'true';
               if (checkoutBtn) checkoutBtn.disabled = !available;
               if (cartBtn)     cartBtn.disabled     = !available;
             });
           });
 
-          /* ── Comprar ahora → agrega y redirige al checkout ── */
+          /* ── Comprar ahora → directo al checkout ── */
           if (checkoutBtn) {
             checkoutBtn.addEventListener('click', function() {
               var variantId = hiddenInput
@@ -386,12 +418,10 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
               })
-              .then(function() {
-                window.location.href = '/checkout';
-              })
+              .then(function() { window.location.href = '/checkout'; })
               .catch(function() {
                 checkoutBtn.disabled = false;
-                checkoutBtn.textContent = 'Comprar ahora';
+                checkoutBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2h2l1.5 7h7.5l1.5-5.5H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="13.5" r="1" fill="currentColor"/><circle cx="12" cy="13.5" r="1" fill="currentColor"/></svg> Comprar ahora';
               });
             });
           }
@@ -406,7 +436,7 @@
         </div>
         <div class="pw-trust-item">
           <span class="pw-trust-icon">♾️</span>
-          <span class="pw-trust-text">Licencia de por vida</span>
+          <span class="pw-trust-text">Suscripción renovable</span>
         </div>
         <div class="pw-trust-item">
           <span class="pw-trust-icon">🖥️</span>
@@ -453,7 +483,7 @@
               <li>Lectura de Excel con filas ilimitadas</li>
               <li>Guardado automático con nombres personalizados</li>
               <li>Funciona 100% offline — sin internet, sin nube</li>
-              <li>Actualizaciones incluidas de por vida</li>
+              <li>Actualizaciones incluidas</li>
             </ul>
             <h3>¿Para qué se usa?</h3>
             <p>Contratos laborales, finiquitos, contratos de arriendo, cotizaciones, certificados, cartas, diplomas, actas y cualquier documento que tengas que generar en masa con datos distintos.</p>
@@ -531,8 +561,8 @@
             <div class="pw-faq-a">Actualmente en Windows. Si necesitas versión para Mac o Linux, escríbenos y lo evaluamos.</div>
           </div>
           <div class="pw-faq-item">
-            <button class="pw-faq-q">¿La licencia es mensual o de por vida?</button>
-            <div class="pw-faq-a">Pago único de por vida. Pagas una sola vez y usas el software para siempre, con actualizaciones incluidas.</div>
+            <button class="pw-faq-q">¿Cómo funciona la suscripción?</button>
+            <div class="pw-faq-a">El software funciona por suscripción mensual o anual. Mientras tu suscripción esté activa, tienes acceso completo y todas las actualizaciones incluidas. Puedes cancelar cuando quieras.</div>
           </div>
           <div class="pw-faq-item">
             <button class="pw-faq-q">¿Para qué tipos de documentos sirve?</button>
