@@ -7,6 +7,9 @@
 
   /* ── Scroll Reveal ──────────────────────────────── */
   function initReveal() {
+    var elements = document.querySelectorAll('.pw-reveal');
+    if (!elements.length) return;
+
     var obs = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) {
@@ -14,8 +17,17 @@
           obs.unobserve(e.target);
         }
       });
-    }, { threshold: 0.07 });
-    document.querySelectorAll('.pw-reveal').forEach(function (el) { obs.observe(el); });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
+
+    elements.forEach(function (el) {
+      /* Si ya está en el viewport al cargar, activar de inmediato */
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        el.classList.add('pw-in');
+      } else {
+        obs.observe(el);
+      }
+    });
   }
 
   /* ── Custom Cursor ──────────────────────────────── */
