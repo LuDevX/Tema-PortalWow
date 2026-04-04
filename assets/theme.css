@@ -150,14 +150,14 @@ h3 { font-family: var(--pw-font-display); font-weight: 700; letter-spacing: -0.5
 
 /* ── REVEAL ANIMATIONS ────────────────────────────── */
 .pw-reveal {
-  opacity: 0; transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+  will-change: opacity, transform;
 }
 .pw-reveal.pw-in { opacity: 1; transform: translateY(0); }
-.pw-d1 { transition-delay: 0.1s; }
-.pw-d2 { transition-delay: 0.2s; }
-.pw-d3 { transition-delay: 0.3s; }
-.pw-d4 { transition-delay: 0.4s; }
+
+/* Fallback: si JS no carga, mostrar todo igual */
+.no-js .pw-reveal { opacity: 1; transform: none; }
 
 /* ── FORMS ────────────────────────────────────────── */
 .pw-input {
