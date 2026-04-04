@@ -28,7 +28,7 @@
 </style>
 
 <div class="pw-collection-page">
-  <div class="pw-collection-header pw-reveal">
+  <div class="pw-collection-header">
     <div class="pw-eyebrow" style="justify-content:center;">Catálogo</div>
     <h1>{{ collection.title }}</h1>
     {%- if collection.description != blank -%}
@@ -42,9 +42,7 @@
   <div class="pw-collection-grid">
     {%- if collection.products_count > 0 -%}
       {%- for product in collection.products -%}
-        <div class="pw-reveal" style="transition-delay:{{ forloop.index0 | times: 80 }}ms;">
-          {% render 'product-card', product: product %}
-        </div>
+        {% render 'product-card', product: product %}
       {%- endfor -%}
     {%- else -%}
       <div class="pw-empty-state">
