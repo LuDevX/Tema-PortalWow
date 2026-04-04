@@ -318,7 +318,9 @@
         {%- endif -%}
 
         <div class="pw-buy-block">
-          <button type="submit" name="checkout" id="pw-btn-checkout"
+
+          <!-- COMPRAR AHORA → directo al checkout via /cart/add?checkout -->
+          <button type="button" id="pw-btn-checkout"
                   class="pw-btn-add-cart"
                   {%- unless product.available -%}disabled{%- endunless -%}>
             {%- if product.available -%}
@@ -333,6 +335,7 @@
             {%- endif -%}
           </button>
 
+          <!-- AGREGAR AL CARRITO -->
           {%- if product.available -%}
             <button type="submit" name="add" id="pw-btn-cart"
                     class="pw-btn-free-dl"
@@ -344,34 +347,54 @@
           <a href="{{ routes.pages_url }}/descargas" class="pw-btn-free-dl">
             📥 Versión gratuita
           </a>
+
         </div>
 
       {%- endform -%}
 
       <script>
         (function(){
-          var options = document.querySelectorAll('#pw-variant-options .pw-variant-btn');
-          var hiddenInput = document.getElementById('pw-variant-id');
-          if (!options.length || !hiddenInput) return;
+          var variantOptions = document.querySelectorAll('#pw-variant-options .pw-variant-btn');
+          var hiddenInput    = document.getElementById('pw-variant-id');
+          var checkoutBtn    = document.getElementById('pw-btn-checkout');
+          var cartBtn        = document.getElementById('pw-btn-cart');
 
-          options.forEach(function(btn) {
+          /* ── Selección de variante ── */
+          variantOptions.forEach(function(btn) {
             btn.addEventListener('click', function() {
-              options.forEach(function(b) { b.classList.remove('active'); });
+              variantOptions.forEach(function(b) { b.classList.remove('active'); });
               btn.classList.add('active');
-              hiddenInput.value = btn.getAttribute('data-variant-id');
-
+              if (hiddenInput) hiddenInput.value = btn.getAttribute('data-variant-id');
               var available = btn.getAttribute('data-available') === 'true';
-              var checkoutBtn = document.getElementById('pw-btn-checkout');
-              var cartBtn = document.getElementById('pw-btn-cart');
-              if (checkoutBtn) {
-                checkoutBtn.disabled = !available;
-                checkoutBtn.innerHTML = available
-                  ? '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2h2l1.5 7h7.5l1.5-5.5H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="13.5" r="1" fill="currentColor"/><circle cx="12" cy="13.5" r="1" fill="currentColor"/></svg> Comprar ahora'
-                  : 'Sin stock';
-              }
-              if (cartBtn) cartBtn.disabled = !available;
+              if (checkoutBtn) checkoutBtn.disabled = !available;
+              if (cartBtn)     cartBtn.disabled     = !available;
             });
           });
+
+          /* ── Comprar ahora → agrega y redirige al checkout ── */
+          if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', function() {
+              var variantId = hiddenInput
+                ? hiddenInput.value
+                : '{{ product.selected_or_first_available_variant.id }}';
+
+              checkoutBtn.disabled = true;
+              checkoutBtn.textContent = 'Redirigiendo...';
+
+              fetch('/cart/add.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
+              })
+              .then(function() {
+                window.location.href = '/checkout';
+              })
+              .catch(function() {
+                checkoutBtn.disabled = false;
+                checkoutBtn.textContent = 'Comprar ahora';
+              });
+            });
+          }
         })();
       </script>
 
