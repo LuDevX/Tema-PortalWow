@@ -293,41 +293,68 @@
         {%- endif -%}
       </div>
 
-      <!-- Variants -->
-      {%- if product.variants.size > 1 -%}
-        {%- for option in product.options_with_values -%}
+      <!-- Form nativo Shopify — requerido para carrito y checkout -->
+      {%- form 'product', product, id: 'pw-product-form', novalidate: 'novalidate' -%}
+
+        <!-- Variantes -->
+        {%- if product.variants.size > 1 -%}
           <div class="pw-variants">
-            <div class="pw-variants-label">{{ option.name }}</div>
+            <div class="pw-variants-label">{{ product.options.first }}</div>
             <div class="pw-variants-options">
-              {%- for value in option.values -%}
-                <button class="pw-variant-btn {% if forloop.first %}active{% endif %}"
-                        data-option-position="{{ option.position }}"
-                        data-value="{{ value | escape }}">
-                  {{ value }}
-                </button>
+              {%- for variant in product.variants -%}
+                <label class="pw-variant-btn {% if variant == product.selected_or_first_available_variant %}active{% endif %}">
+                  <input type="radio"
+                         name="id"
+                         value="{{ variant.id }}"
+                         {% if variant == product.selected_or_first_available_variant %}checked{% endif %}
+                         {% unless variant.available %}disabled{% endunless %}
+                         style="position:absolute;opacity:0;pointer-events:none;">
+                  {{ variant.title }}
+                </label>
               {%- endfor -%}
             </div>
           </div>
-        {%- endfor -%}
-      {%- endif -%}
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        {%- endif -%}
 
-      <!-- Buy buttons -->
-      <div class="pw-buy-block">
-        <button class="pw-btn-add-cart"
-                data-add-to-cart
-                data-variant-id="{{ product.selected_or_first_available_variant.id }}"
-                {%- unless product.available -%}disabled{%- endunless -%}>
+        <!-- Botones de compra -->
+        <div class="pw-buy-block">
+
+          <!-- Comprar ahora → directo al checkout -->
+          <button type="submit"
+                  name="checkout"
+                  class="pw-btn-add-cart"
+                  {%- unless product.available -%}disabled{%- endunless -%}>
+            {%- if product.available -%}
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M2 2h2l1.5 7h7.5l1.5-5.5H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="7" cy="13.5" r="1" fill="currentColor"/>
+                <circle cx="12" cy="13.5" r="1" fill="currentColor"/>
+              </svg>
+              Comprar ahora
+            {%- else -%}
+              Sin stock
+            {%- endif -%}
+          </button>
+
+          <!-- Agregar al carrito -->
           {%- if product.available -%}
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2h2l1.5 7h7.5l1.5-5.5H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="13.5" r="1" fill="currentColor"/><circle cx="12" cy="13.5" r="1" fill="currentColor"/></svg>
-            Agregar al carrito
-          {%- else -%}
-            Sin stock
+            <button type="submit"
+                    name="add"
+                    class="pw-btn-free-dl"
+                    style="border-color:rgba(0,229,160,0.3);color:var(--pw-green);">
+              + Agregar al carrito
+            </button>
           {%- endif -%}
-        </button>
-        <a href="{{ routes.pages_url }}/descargas" class="pw-btn-free-dl">
-          📥 Descargar versión gratuita
-        </a>
-      </div>
+
+          <a href="{{ routes.pages_url }}/descargas" class="pw-btn-free-dl">
+            📥 Versión gratuita
+          </a>
+
+        </div>
+
+      {%- endform -%}
 
       <!-- Trust -->
       <div class="pw-trust">
