@@ -311,15 +311,30 @@
             <div class="pw-variants-label">{{ product.options.first }}</div>
             <div class="pw-variants-options" id="pw-variant-options">
               {%- for variant in product.variants -%}
+                {%- assign v_has_compare = false -%}
+                {%- if variant.compare_at_price > variant.price -%}
+                  {%- assign v_has_compare = true -%}
+                  {%- assign v_discount = variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | round -%}
+                  {%- assign v_discount_str = v_discount | prepend: '-' | append: '%' -%}
+                {%- else -%}
+                  {%- assign v_discount_str = '' -%}
+                {%- endif -%}
+                {%- if variant.title contains 'Mensual' -%}
+                  {%- assign v_period = '/ mes' -%}
+                {%- elsif variant.title contains 'Anual' -%}
+                  {%- assign v_period = '/ año' -%}
+                {%- else -%}
+                  {%- assign v_period = '' -%}
+                {%- endif -%}
                 <button type="button"
                         class="pw-variant-btn {% if forloop.first %}active{% endif %}"
                         data-variant-id="{{ variant.id }}"
                         data-available="{{ variant.available }}"
                         data-price="{{ variant.price | money }}"
                         data-compare="{{ variant.compare_at_price | money }}"
-                        data-has-compare="{{ variant.compare_at_price > variant.price }}"
-                        data-discount="{%- if variant.compare_at_price > variant.price -%}-{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price | round }}%{%- endif -%}"
-                        data-period="{%- if variant.title contains 'Mensual' -%}/ mes{%- elsif variant.title contains 'Anual' -%}/ año{%- endif -%}"
+                        data-has-compare="{{ v_has_compare }}"
+                        data-discount="{{ v_discount_str }}"
+                        data-period="{{ v_period }}"
                         {% unless variant.available %}disabled{% endunless %}>
                   {{ variant.title }}
                 </button>
