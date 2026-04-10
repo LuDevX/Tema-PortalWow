@@ -29,16 +29,17 @@
 <div class="pw-cart-page">
   <h1>Tu carrito</h1>
   {%- if cart.item_count == 0 -%}
-    <div class="pw-cart-empty pw-reveal">
+    <div class="pw-cart-empty">
       <p style="font-size:56px;margin-bottom:16px;">🛒</p>
       <p>Tu carrito está vacío.</p>
       <a href="{{ routes.collections_url }}/all" class="pw-btn-primary" style="display:inline-flex;margin-top:8px;">Ver softwares</a>
     </div>
   {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" id="pw-cart-form">
     <div class="pw-cart-grid">
       <div class="pw-cart-items">
         {%- for item in cart.items -%}
-          <div class="pw-cart-item pw-reveal" style="transition-delay:{{ forloop.index0 | times: 60 }}ms;">
+          <div class="pw-cart-item">
             <div class="pw-cart-item-img">
               {%- if item.image -%}
                 <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title | escape }}">
@@ -47,35 +48,56 @@
               {%- endif -%}
             </div>
             <div class="pw-cart-item-info">
-              <div class="pw-cart-item-title">{{ item.product.title }}</div>
+              <div class="pw-cart-item-title">
+                <a href="{{ item.url }}" style="color:var(--pw-text);">{{ item.product.title }}</a>
+              </div>
               {%- unless item.product.has_only_default_variant -%}
                 <div class="pw-cart-item-variant">{{ item.variant.title }}</div>
               {%- endunless -%}
             </div>
             <div class="pw-cart-item-price">{{ item.final_line_price | money }}</div>
-            <a href="{{ routes.cart_remove_url }}?id={{ item.key }}" class="pw-cart-item-remove" aria-label="Eliminar">×</a>
+            <button type="button"
+                    class="pw-cart-item-remove"
+                    aria-label="Eliminar {{ item.title }}"
+                    onclick="removeCartItem('{{ item.key }}')">×</button>
           </div>
         {%- endfor -%}
       </div>
-      <div class="pw-cart-summary pw-reveal">
+
+      <div class="pw-cart-summary">
         <h3>Resumen del pedido</h3>
-        <div class="pw-cart-subtotal">
-          <span>Subtotal</span><span>{{ cart.total_price | money }}</span>
-        </div>
+        {%- if cart.items.size > 1 -%}
+          <div class="pw-cart-subtotal">
+            <span>{{ cart.item_count }} productos</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+        {%- endif -%}
         <div class="pw-cart-total">
-          <span>Total</span><span>{{ cart.total_price | money }}</span>
+          <span>Total</span>
+          <span>{{ cart.total_price | money }}</span>
         </div>
-        <form action="{{ routes.checkout_url }}" method="post">
-          <button type="submit" class="pw-btn-add-cart" style="display:flex;">
-            Ir al checkout
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </form>
+        <a href="/checkout" class="pw-btn-add-cart" style="display:flex;justify-content:center;text-decoration:none;">
+          Ir al checkout
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
         <p class="pw-cart-note">Pago seguro · Impuestos incluidos</p>
       </div>
     </div>
+    </form>
   {%- endif -%}
 </div>
+
+<script>
+function removeCartItem(key) {
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: key, quantity: 0 })
+  })
+  .then(function() { window.location.reload(); })
+  .catch(function(e) { console.error(e); });
+}
+</script>
 
 {% schema %}
 { "name": "Cart Main", "settings": [], "presets": [{ "name": "Cart Main" }] }
