@@ -167,6 +167,9 @@
       });
     });
   }
+
+  /* ── Tabs ───────────────────────────────────────── */
+  function initTabs() {
     document.querySelectorAll('.pw-tabs').forEach(function (tabs) {
       var btns = tabs.querySelectorAll('.pw-tab-btn');
       var panels = tabs.querySelectorAll('.pw-tab-panel');
