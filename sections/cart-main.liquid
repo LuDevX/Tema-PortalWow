@@ -15,16 +15,115 @@
 .pw-cart-item-info { flex:1;min-width:0; }
 .pw-cart-item-title { font-weight:600;font-size:15px;color:var(--pw-text);margin-bottom:4px; }
 .pw-cart-item-variant { font-size:12px;color:var(--pw-muted);font-family:var(--pw-font-mono); }
+.pw-cart-item-qty {
+  display:flex;align-items:center;gap:8px;
+  font-family:var(--pw-font-mono);font-size:13px;color:var(--pw-muted2);
+  flex-shrink:0;
+}
+.pw-cart-item-qty-num {
+  background:var(--pw-surface);border:1px solid var(--pw-border2);
+  color:var(--pw-text);font-size:14px;font-weight:600;
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+}
 .pw-cart-item-price { font-family:var(--pw-font-display);font-size:18px;font-weight:700;color:var(--pw-text);flex-shrink:0; }
-.pw-cart-item-remove { background:none;border:none;color:var(--pw-muted2);cursor:pointer;font-size:18px;flex-shrink:0;transition:color 0.2s; }
-.pw-cart-item-remove:hover { color:var(--pw-text); }
+.pw-cart-item-remove { background:none;border:none;color:var(--pw-muted2);cursor:pointer;font-size:22px;flex-shrink:0;transition:color 0.2s;line-height:1; }
+.pw-cart-item-remove:hover { color:#EF9A9A; }
 .pw-cart-summary { background:var(--pw-bg3);border:1px solid var(--pw-border);border-radius:var(--pw-radius-lg);padding:24px;position:sticky;top:88px; }
 .pw-cart-summary h3 { font-size:16px;font-weight:700;margin-bottom:20px; }
 .pw-cart-subtotal { display:flex;justify-content:space-between;font-size:14px;color:var(--pw-muted);margin-bottom:12px; }
 .pw-cart-total { display:flex;justify-content:space-between;font-size:18px;font-weight:700;color:var(--pw-text);padding-top:12px;border-top:1px solid var(--pw-border);margin-bottom:20px; }
 .pw-cart-note { font-size:12px;color:var(--pw-muted2);text-align:center;margin-top:12px;font-family:var(--pw-font-mono); }
+.pw-cart-restriction {
+  display:flex;align-items:flex-start;gap:10px;
+  background:rgba(0,229,160,0.06);border:1px solid rgba(0,229,160,0.15);
+  border-radius:10px;padding:12px 14px;margin-top:14px;
+  font-size:12px;color:var(--pw-muted);line-height:1.6;font-family:var(--pw-font-mono);
+}
+.pw-cart-restriction-icon { color:var(--pw-green);flex-shrink:0;font-size:14px; }
 @media(max-width:768px){ .pw-cart-grid{grid-template-columns:1fr;} }
 </style>
+
+<div class="pw-cart-page">
+  <h1>Tu carrito</h1>
+  {%- if cart.item_count == 0 -%}
+    <div class="pw-cart-empty">
+      <p style="font-size:56px;margin-bottom:16px;">🛒</p>
+      <p>Tu carrito está vacío.</p>
+      <a href="{{ routes.collections_url }}/all" class="pw-btn-primary" style="display:inline-flex;margin-top:8px;">Ver softwares</a>
+    </div>
+  {%- else -%}
+    <div class="pw-cart-grid">
+      <div class="pw-cart-items">
+        {%- for item in cart.items -%}
+          <div class="pw-cart-item">
+            <div class="pw-cart-item-img">
+              {%- if item.image -%}
+                <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title | escape }}">
+              {%- else -%}
+                <span style="font-size:28px;">📄</span>
+              {%- endif -%}
+            </div>
+            <div class="pw-cart-item-info">
+              <div class="pw-cart-item-title">
+                <a href="{{ item.url }}" style="color:var(--pw-text);">{{ item.product.title }}</a>
+              </div>
+              {%- unless item.product.has_only_default_variant -%}
+                <div class="pw-cart-item-variant">{{ item.variant.title }}</div>
+              {%- endunless -%}
+            </div>
+            <!-- Cantidad fija: solo muestra 1, sin botones de modificar -->
+            <div class="pw-cart-item-qty">
+              <span>×</span>
+              <span class="pw-cart-item-qty-num">1</span>
+            </div>
+            <div class="pw-cart-item-price">{{ item.final_line_price | money }}</div>
+            <button type="button"
+                    class="pw-cart-item-remove"
+                    aria-label="Eliminar {{ item.title | escape }}"
+                    onclick="removeCartItem('{{ item.key }}')">×</button>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <div class="pw-cart-summary">
+        <h3>Resumen del pedido</h3>
+        <div class="pw-cart-subtotal">
+          <span>{{ cart.item_count }} producto{{ cart.item_count | pluralize: '', 's' }}</span>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+        <div class="pw-cart-total">
+          <span>Total</span>
+          <span>{{ cart.total_price | money }}</span>
+        </div>
+        <a href="/checkout" class="pw-btn-add-cart" style="display:flex;justify-content:center;text-decoration:none;">
+          Ir al checkout
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <div class="pw-cart-restriction">
+          <span class="pw-cart-restriction-icon">ℹ</span>
+          <span>Una licencia por pedido. Para cambiar el plan, elimina el producto y selecciona el otro.</span>
+        </div>
+        <p class="pw-cart-note">Pago seguro · Impuestos incluidos</p>
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+function removeCartItem(key) {
+  var btn = event.currentTarget;
+  btn.disabled = true;
+  btn.textContent = '...';
+  fetch('/cart/change.js', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: key, quantity: 0 })
+  })
+  .then(function() { window.location.reload(); })
+  .catch(function() { btn.disabled = false; btn.textContent = '×'; });
+}
+</script>
 
 <div class="pw-cart-page">
   <h1>Tu carrito</h1>

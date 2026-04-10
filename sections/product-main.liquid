@@ -421,24 +421,110 @@
           /* ── Comprar ahora → directo al checkout ── */
           if (checkoutBtn) {
             checkoutBtn.addEventListener('click', function() {
-              var variantId = hiddenInput
-                ? hiddenInput.value
-                : '{{ product.selected_or_first_available_variant.id }}';
-
-              checkoutBtn.disabled = true;
-              checkoutBtn.textContent = 'Redirigiendo...';
-
-              fetch('/cart/add.js', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: parseInt(variantId), quantity: 1 })
-              })
-              .then(function() { window.location.href = '/checkout'; })
-              .catch(function() {
-                checkoutBtn.disabled = false;
-                checkoutBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2h2l1.5 7h7.5l1.5-5.5H5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="13.5" r="1" fill="currentColor"/><circle cx="12" cy="13.5" r="1" fill="currentColor"/></svg> Comprar ahora';
-              });
+              var variantId = hiddenInput ? hiddenInput.value : '{{ product.selected_or_first_available_variant.id }}';
+              addAndGo(parseInt(variantId), 'checkout');
             });
+          }
+
+          /* ── Agregar al carrito ── */
+          if (cartBtn) {
+            cartBtn.addEventListener('click', function(e) {
+              e.preventDefault();
+              var variantId = hiddenInput ? hiddenInput.value : '{{ product.selected_or_first_available_variant.id }}';
+              addAndGo(parseInt(variantId), 'cart');
+            });
+          }
+
+          /* ── Lógica central: verificar carrito antes de agregar ── */
+          function addAndGo(variantId, destination) {
+            var btn = destination === 'checkout' ? checkoutBtn : cartBtn;
+            var originalHTML = btn ? btn.innerHTML : '';
+            if (btn) { btn.disabled = true; btn.textContent = 'Verificando...'; }
+
+            /* 1. Consultar carrito actual */
+            fetch('/cart.js')
+              .then(function(r) { return r.json(); })
+              .then(function(cart) {
+
+                /* 2. Verificar si ya hay un item del mismo producto */
+                var productHandle = '{{ product.handle }}';
+                var existingItem = null;
+                for (var i = 0; i < cart.items.length; i++) {
+                  if (cart.items[i].handle === productHandle) {
+                    existingItem = cart.items[i];
+                    break;
+                  }
+                }
+
+                /* 3. Si ya existe CUALQUIER variante del mismo producto → bloquear */
+                if (existingItem) {
+                  if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
+
+                  /* Mostrar mensaje de error */
+                  showCartError(
+                    existingItem.variant_id === variantId
+                      ? 'Ya tienes esta licencia en tu carrito.'
+                      : 'Solo puedes tener una licencia a la vez. Elimina la que tienes en el carrito primero.'
+                  );
+                  return;
+                }
+
+                /* 4. Carrito limpio → agregar con quantity: 1 */
+                fetch('/cart/add.js', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ id: variantId, quantity: 1 })
+                })
+                .then(function() {
+                  if (destination === 'checkout') {
+                    window.location.href = '/checkout';
+                  } else {
+                    window.location.href = '/cart';
+                  }
+                })
+                .catch(function() {
+                  if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
+                  showCartError('Ocurrió un error. Intenta de nuevo.');
+                });
+              })
+              .catch(function() {
+                if (btn) { btn.disabled = false; btn.innerHTML = originalHTML; }
+                showCartError('No se pudo verificar el carrito. Intenta de nuevo.');
+              });
+          }
+
+          /* ── Toast de error ── */
+          function showCartError(msg) {
+            var existing = document.getElementById('pw-cart-toast');
+            if (existing) existing.remove();
+
+            var toast = document.createElement('div');
+            toast.id = 'pw-cart-toast';
+            toast.textContent = msg;
+            toast.style.cssText = [
+              'position:fixed',
+              'bottom:24px',
+              'left:50%',
+              'transform:translateX(-50%)',
+              'background:#1A1F28',
+              'border:1px solid rgba(229,57,53,0.5)',
+              'color:#EF9A9A',
+              'font-family:var(--pw-font-body)',
+              'font-size:14px',
+              'padding:14px 24px',
+              'border-radius:100px',
+              'z-index:9999',
+              'box-shadow:0 8px 32px rgba(0,0,0,0.4)',
+              'white-space:nowrap',
+              'max-width:90vw',
+              'text-align:center',
+              'transition:opacity 0.3s'
+            ].join(';');
+            document.body.appendChild(toast);
+            setTimeout(function() {
+              toast.style.opacity = '0';
+              setTimeout(function() { toast.remove(); }, 300);
+            }, 4000);
           }
         })();
       </script>
