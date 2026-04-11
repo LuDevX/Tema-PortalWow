@@ -29,6 +29,28 @@
 /* FAQ PAGE */
 .pw-faq-section { margin-top: 32px; }
 .pw-faq-section > h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; letter-spacing: -0.5px; }
+.pw-faq-item { border-bottom: 1px solid var(--pw-border); }
+.pw-faq-q {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 16px 0; cursor: pointer; gap: 16px;
+  font-size: 15px; font-weight: 600; color: var(--pw-text);
+  background: none; border: none; width: 100%; text-align: left;
+  font-family: var(--pw-font-body);
+  transition: color 0.2s;
+}
+.pw-faq-q:hover { color: var(--pw-green); }
+.pw-faq-q::after {
+  content: '+'; font-size: 22px; font-weight: 300;
+  color: var(--pw-green); flex-shrink: 0;
+  transition: transform 0.3s;
+}
+.pw-faq-item.pw-open .pw-faq-q::after { transform: rotate(45deg); }
+.pw-faq-a {
+  font-size: 14px; font-weight: 300; color: var(--pw-muted);
+  line-height: 1.8; max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.3s;
+}
+.pw-faq-item.pw-open .pw-faq-a { max-height: 300px; padding-bottom: 18px; }
 
 /* SOPORTE */
 .pw-support-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 28px 0; }
@@ -44,7 +66,7 @@
 </style>
 
 <div class="pw-page">
-  <div class="pw-page-header pw-reveal">
+  <div class="pw-page-header">
     <div class="pw-eyebrow">{{ page.title }}</div>
     <h1>{{ page.title }}</h1>
   </div>
