@@ -80,27 +80,40 @@
       <h4>Softwares</h4>
       <ul>
         <li><a href="{{ routes.collections_url }}/all">Ver catálogo</a></li>
-        <li><a href="{{ routes.product_url | replace: '__', 'generador-de-documentos' }}">Generador de Documentos</a></li>
-        <li><a href="{{ routes.pages_url }}/descargas">Versión gratuita</a></li>
-        <li><a href="/pages/blogs">Próximamente</a></li>
+        <li><a href="/products/generador-de-documentos">Generador de Documentos</a></li>
+        {%- if pages['descargas'].published -%}
+          <li><a href="{{ routes.pages_url }}/descargas">Versión gratuita</a></li>
+        {%- endif -%}
       </ul>
     </div>
 
     <div class="pw-footer-col">
       <h4>Recursos</h4>
       <ul>
-        <li><a href="{{ routes.pages_url }}/soporte">Centro de soporte</a></li>
-        <li><a href="/pages/blogs">Blog</a></li>
-        <li><a href="{{ routes.pages_url }}/descargas">Descargas</a></li>
+        {%- if pages['soporte'].published -%}
+          <li><a href="{{ routes.pages_url }}/soporte">Centro de soporte</a></li>
+        {%- endif -%}
+        {%- if pages['blogs'].published -%}
+          <li><a href="/pages/blogs">Blog</a></li>
+        {%- endif -%}
+        {%- if pages['descargas'].published -%}
+          <li><a href="{{ routes.pages_url }}/descargas">Descargas</a></li>
+        {%- endif -%}
       </ul>
     </div>
 
     <div class="pw-footer-col">
       <h4>Legal</h4>
       <ul>
-        <li><a href="{{ routes.pages_url }}/politica-de-privacidad">Privacidad</a></li>
-        <li><a href="{{ routes.pages_url }}/terminos-y-condiciones">Términos</a></li>
-        <li><a href="{{ routes.pages_url }}/politica-de-reembolso">Reembolsos</a></li>
+        {%- if pages['politica-de-privacidad'].published -%}
+          <li><a href="{{ routes.pages_url }}/politica-de-privacidad">Privacidad</a></li>
+        {%- endif -%}
+        {%- if pages['terminos-y-condiciones'].published -%}
+          <li><a href="{{ routes.pages_url }}/terminos-y-condiciones">Términos</a></li>
+        {%- endif -%}
+        {%- if pages['politica-de-reembolso'].published -%}
+          <li><a href="{{ routes.pages_url }}/politica-de-reembolso">Reembolsos</a></li>
+        {%- endif -%}
       </ul>
     </div>
   </div>
@@ -108,8 +121,12 @@
   <div class="pw-footer-bottom">
     <p class="pw-footer-copy">© {{ 'now' | date: '%Y' }} <span>{{ shop.name }}</span> — Software que resuelve problemas reales.</p>
     <div class="pw-footer-legal">
-      <a href="{{ routes.pages_url }}/politica-de-privacidad">Privacidad</a>
-      <a href="{{ routes.pages_url }}/terminos-y-condiciones">Términos</a>
+      {%- if pages['politica-de-privacidad'].published -%}
+        <a href="{{ routes.pages_url }}/politica-de-privacidad">Privacidad</a>
+      {%- endif -%}
+      {%- if pages['terminos-y-condiciones'].published -%}
+        <a href="{{ routes.pages_url }}/terminos-y-condiciones">Términos</a>
+      {%- endif -%}
     </div>
   </div>
 </footer>
