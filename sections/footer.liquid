@@ -81,8 +81,8 @@
       <ul>
         <li><a href="{{ routes.collections_url }}/all">Ver catálogo</a></li>
         <li><a href="/products/generador-de-documentos">Generador de Documentos</a></li>
-        {%- if pages['descargas'] != blank and pages['descargas'].published_at != blank -%}
-          <li><a href="{{ routes.pages_url }}/descargas">Versión gratuita</a></li>
+        {%- if pages['descargas'].url != blank -%}
+          <li><a href="/pages/descargas">Versión gratuita</a></li>
         {%- endif -%}
       </ul>
     </div>
@@ -90,14 +90,14 @@
     <div class="pw-footer-col">
       <h4>Recursos</h4>
       <ul>
-        {%- if pages['soporte'] != blank and pages['soporte'].published_at != blank -%}
-          <li><a href="{{ routes.pages_url }}/soporte">Centro de soporte</a></li>
+        {%- if pages['soporte'].url != blank -%}
+          <li><a href="/pages/soporte">Centro de soporte</a></li>
         {%- endif -%}
-        {%- if pages['blogs'] != blank and pages['blogs'].published_at != blank -%}
+        {%- if pages['blogs'].url != blank -%}
           <li><a href="/pages/blogs">Blog</a></li>
         {%- endif -%}
-        {%- if pages['descargas'] != blank and pages['descargas'].published_at != blank -%}
-          <li><a href="{{ routes.pages_url }}/descargas">Descargas</a></li>
+        {%- if pages['descargas'].url != blank -%}
+          <li><a href="/pages/descargas">Descargas</a></li>
         {%- endif -%}
       </ul>
     </div>
@@ -105,14 +105,14 @@
     <div class="pw-footer-col">
       <h4>Legal</h4>
       <ul>
-        {%- if pages['politica-de-privacidad'] != blank and pages['politica-de-privacidad'].published_at != blank -%}
-          <li><a href="{{ routes.pages_url }}/politica-de-privacidad">Privacidad</a></li>
+        {%- if pages['politica-de-privacidad'].url != blank -%}
+          <li><a href="/pages/politica-de-privacidad">Privacidad</a></li>
         {%- endif -%}
-        {%- if pages['terminos-y-condiciones'] != blank and pages['terminos-y-condiciones'].published_at != blank -%}
-          <li><a href="{{ routes.pages_url }}/terminos-y-condiciones">Términos</a></li>
+        {%- if pages['terminos-y-condiciones'].url != blank -%}
+          <li><a href="/pages/terminos-y-condiciones">Términos</a></li>
         {%- endif -%}
-        {%- if pages['politica-de-reembolso'] != blank and pages['politica-de-reembolso'].published_at != blank -%}
-          <li><a href="{{ routes.pages_url }}/politica-de-reembolso">Reembolsos</a></li>
+        {%- if pages['politica-de-reembolso'].url != blank -%}
+          <li><a href="/pages/politica-de-reembolso">Reembolsos</a></li>
         {%- endif -%}
       </ul>
     </div>
@@ -121,11 +121,11 @@
   <div class="pw-footer-bottom">
     <p class="pw-footer-copy">© {{ 'now' | date: '%Y' }} <span>{{ shop.name }}</span> — Software que resuelve problemas reales.</p>
     <div class="pw-footer-legal">
-      {%- if pages['politica-de-privacidad'] != blank and pages['politica-de-privacidad'].published_at != blank -%}
-        <a href="{{ routes.pages_url }}/politica-de-privacidad">Privacidad</a>
+      {%- if pages['politica-de-privacidad'].url != blank -%}
+        <a href="/pages/politica-de-privacidad">Privacidad</a>
       {%- endif -%}
-      {%- if pages['terminos-y-condiciones'] != blank and pages['terminos-y-condiciones'].published_at != blank -%}
-        <a href="{{ routes.pages_url }}/terminos-y-condiciones">Términos</a>
+      {%- if pages['terminos-y-condiciones'].url != blank -%}
+        <a href="/pages/terminos-y-condiciones">Términos</a>
       {%- endif -%}
     </div>
   </div>
