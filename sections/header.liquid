@@ -123,13 +123,13 @@ body { padding-top: 68px; }
   <div class="pw-nav-center">
     <a href="{{ routes.root_url }}" {% if template.name == 'index' %}class="pw-active"{% endif %}>Inicio</a>
     <a href="{{ routes.collections_url }}/all" {% if template.name == 'collection' %}class="pw-active"{% endif %}>Softwares</a>
-    {%- if page_descargas.published -%}
+    {%- if page_descargas != blank and page_descargas.published_at != blank -%}
       <a href="{{ routes.pages_url }}/descargas">Descargar gratis</a>
     {%- endif -%}
-    {%- if page_soporte.published -%}
+    {%- if page_soporte != blank and page_soporte.published_at != blank -%}
       <a href="{{ routes.pages_url }}/soporte">Soporte</a>
     {%- endif -%}
-    {%- if page_blogs.published -%}
+    {%- if page_blogs != blank and page_blogs.published_at != blank -%}
       <a href="/pages/blogs">Blog</a>
     {%- endif -%}
   </div>
@@ -143,7 +143,7 @@ body { padding-top: 68px; }
       </svg>
       <span class="pw-cart-count" aria-label="items en carrito">0</span>
     </a>
-    {%- if page_descargas.published -%}
+    {%- if page_descargas != blank and page_descargas.published_at != blank -%}
       <a href="{{ routes.pages_url }}/descargas" class="pw-nav-cta">
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3 6.5l3.5 4 3.5-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 11h11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         <span>Versión gratuita</span>
@@ -160,17 +160,17 @@ body { padding-top: 68px; }
   <div class="pw-drawer-links">
     <a href="{{ routes.root_url }}">Inicio</a>
     <a href="{{ routes.collections_url }}/all">Softwares</a>
-    {%- if page_descargas.published -%}
+    {%- if page_descargas != blank and page_descargas.published_at != blank -%}
       <a href="{{ routes.pages_url }}/descargas">Descargar gratis</a>
     {%- endif -%}
-    {%- if page_soporte.published -%}
+    {%- if page_soporte != blank and page_soporte.published_at != blank -%}
       <a href="{{ routes.pages_url }}/soporte">Soporte</a>
     {%- endif -%}
-    {%- if page_blogs.published -%}
+    {%- if page_blogs != blank and page_blogs.published_at != blank -%}
       <a href="/pages/blogs">Blog</a>
     {%- endif -%}
   </div>
-  {%- if page_descargas.published -%}
+  {%- if page_descargas != blank and page_descargas.published_at != blank -%}
     <a href="{{ routes.pages_url }}/descargas" class="pw-btn-primary" style="width:100%; justify-content:center;">
       📥 Descargar versión gratuita
     </a>
