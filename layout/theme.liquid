@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080A0D">
 
+  <!-- Favicon -->
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+  {%- else -%}
+    <link rel="icon" type="image/svg+xml" href="{{ 'portalwow-favicon.svg' | asset_url }}">
+  {%- endif -%}
+
   <title>
     {%- if template == 'index' -%}
       {{ shop.name }} — Software que resuelve problemas reales
@@ -18,7 +26,7 @@
   {%- if page_description -%}
     <meta name="description" content="{{ page_description | escape }}">
   {%- elsif template == 'index' -%}
-    <meta name="description" content="PortalWow — Software que automatiza, simplifica y resuelve. Herramientas digitales para profesionales y empresas chilenas.">
+    <meta name="description" content="Herramientas digitales para profesionales y empresas en Chile. Automatiza tareas, ahorra tiempo y trabaja más inteligente con los softwares de PortalWow.">
   {%- endif -%}
 
   <!-- Open Graph -->
