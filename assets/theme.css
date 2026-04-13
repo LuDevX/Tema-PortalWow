@@ -2,7 +2,7 @@
    PORTALWOW THEME — Global Styles
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ── VARIABLES ────────────────────────────────────── */
 :root {
@@ -21,7 +21,7 @@
   --pw-green-dim:  rgba(0,229,160,0.08);
   --pw-green-glow: rgba(0,229,160,0.20);
   --pw-purple:     #8B5CF6;
-  --pw-font-display: 'Syne', sans-serif;
+  --pw-font-display: 'Plus Jakarta Sans', sans-serif;
   --pw-font-body:    'Outfit', sans-serif;
   --pw-font-mono:    'JetBrains Mono', monospace;
   --pw-radius:     14px;
@@ -77,9 +77,9 @@ input, textarea, select { font: inherit; }
 .pw-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--pw-green); }
 
 h1, h2, h3, h4, h5 { line-height: 1.1; color: var(--pw-text); }
-h1 { font-family: var(--pw-font-display); font-weight: 800; letter-spacing: -1.5px; }
-h2 { font-family: var(--pw-font-display); font-weight: 800; letter-spacing: -1px; }
-h3 { font-family: var(--pw-font-display); font-weight: 700; letter-spacing: -0.5px; }
+h1 { font-family: var(--pw-font-display); font-weight: 800; letter-spacing: -0.5px; }
+h2 { font-family: var(--pw-font-display); font-weight: 800; letter-spacing: -0.3px; }
+h3 { font-family: var(--pw-font-display); font-weight: 700; letter-spacing: -0.2px; }
 
 /* ── BUTTONS ──────────────────────────────────────── */
 .pw-btn-primary {
