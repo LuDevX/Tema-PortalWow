@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img">
+  <title>PortalWow favicon</title>
+  <!-- Fondo oscuro -->
+  <rect width="512" height="512" rx="80" fill="#080A0D"/>
+  <!-- Símbolo centrado y grande -->
+  <polygon points="80,60 380,60 440,120 440,452 80,452" fill="#0E1116" stroke="#1A2030" stroke-width="8"/>
+  <!-- Esquina cortada en verde -->
+  <polyline points="380,60 440,120" fill="none" stroke="#00E5A0" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="440" cy="120" r="22" fill="#00E5A0"/>
+  <!-- PW centrado -->
+  <text x="260" y="310" font-family="monospace" font-weight="700" font-size="160" fill="#EDF0F4" text-anchor="middle">PW</text>
+  <!-- dot verde inferior derecho -->
+  <circle cx="382" cy="396" r="18" fill="#00E5A0"/>
+</svg>
